@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{todonotes}
+\usepackage{amsmath}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{placeins}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage[citestyle=alphabetic,bibstyle=numeric]{biblatex}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{graphicx}
+
+
+
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{\textcolor{gray}{#1}}%
+}
+
+
+\addbibresource{bibliography.bib}
+
+\title{DeepVision - Deep Learning and Convolutional Neural Networks in Computational Vision:\\
+Group Normalization Project}
+\author{Marco Deuscher \\\href{mailto:marco.deuscher@uni-ulm.de}{marco.deuscher@uni-ulm.de}}
+\date{Summer Term 2021}
+
+\begin{document}
+    \maketitle
+
+    \input{chapters/intro.tex}
+    \input{chapters/theory.tex}
+    \input{chapters/impl.tex}
+    \input{chapters/conclusion.tex}
+
+
+
+
+    \printbibliography
+
+\end{document}

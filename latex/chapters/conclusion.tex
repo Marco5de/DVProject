@@ -1,0 +1,8 @@
+\section{Conclusion}\label{sec:conclusion}
+The goal of this report was the reproduction of the results the original paper presented.
+This was partly achieved as presented in section~\ref{subsec:evaluation}.
+For smaller batch sizes the expected behaviour of group norm was achieved whereas for larger batch sizes the performance deteriorated unexpectedly.
+However, the main use case for employing group normalization are models with a large memory footprint which certainly was not the case for the used model.
+During my bachelor thesis on Depth Estimation using CNNs I experimented with the usage of group normalization as training was conducted on a single GPU.
+However, I was unable to adapt the model such that I would achieve similar performance when using group normalization.
+For many other tasks including the tasks evaluated in the paper, group normalization offers the possibility of training with a significantly smaller batch size that enables researches to experiment with higher capacity models.

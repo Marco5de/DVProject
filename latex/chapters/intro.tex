@@ -1,0 +1,9 @@
+\section{Introduction}\label{sec:introduction}
+For many applications, high resolution inputs and outputs are required, such tasks include semantic segmentation, instance segmentation, depth estimation or visual generative models.
+Here the amount of memory that is required during the training process surmounts the available memory on many consumer GPUs.
+Thus, training such models is often conducted on multiple GPUs in a synchronized manner.
+This however poses a limitation if the amount of computational power, especially memory is limited and only a single graphics card is available during training.
+One possible solution for such a scenario is training on a lower resolution, however this often negatively impacts the performance of the model.
+Thus, the need to develop an effective normalization procedure that is independent of the batch size arises.
+The commonly employed Batch Normalization layer introduces larger error for smaller batch sizes as the estimation of the batch statistics become faulty.
+Such an idea is presented in the Group Normalization paper by Wu and He~\cite{DBLP:journals/corr/abs-1803-08494}.

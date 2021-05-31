@@ -1,0 +1,8 @@
+google-auth == 1.30.0
+jupyter == 1.0.0
+matplotlib == 3.4.2
+numpy == 1.20.3
+tensorboard == 2.5.0
+torch == 1.8.1
+torchvision == 0.9.1
+tqdm == 4.60.0

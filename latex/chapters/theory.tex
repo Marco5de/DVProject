@@ -1,0 +1,62 @@
+\section{Reading and Theory}\label{sec:reading-and-theory}
+The following firstly revises the basic idea presented in the paper and presents its main conclusions.
+Secondly, the contents of the paper are discussed in the context of the Lecture Deep Vision - Deep Learning and Convolutional Neural Networks in Computational Vision and the position of the paper in the literature is discussed.
+Lastly, remaining issues and suggestions for future work are presented.
+
+\subsection{Revision of the Content}
+Batch normalization is used in many network architectures as it offers faster training due to the distribution being closer to the initial initialization of the weights by normalizing each batch to zero mean and unit variance.
+Further, the normalization creates a small error due to the running mean and variance that acts as a regularization similar to the addition of noise.
+However, there are some drawbacks to the usage of batch normalization.
+The statistics (mean and variance) are computed during training and are kept during inference, hence if the distribution changes the normalization is not valid anymore.
+Another issue is the aforementioned problem of larger statistical errors when using smaller batch sizes.
+So there is the need for a normalization technique which is independent of the batch size.
+There are layer norm and instance norm which normalize all channels and single channels respectively.
+However, they have been shown to not work as well for visual tasks.
+The in the paper presented group normalization partitions the channels in individual groups that are then normalized separately.
+The idea to group channels is motivated by many classical computer vision features where some form of group normalization is applied.
+This is especially true for the first layers in a network where orientation sensitive filters may result in similar distributions and may thus be normalized together.
+For higher level features this is less intuitive but there may still exist a dependency between individual feature channels.
+Furthermore, the idea to group channels has been exploited in other contexts as well.
+One well known example is the ResNext architecture~\cite{DBLP:journals/corr/XieGDTH16} where in each residual block the channels are grouped into smaller convolutions, outperforming the original ResNets on the ImageNet challenge.\\
+
+The original batch normalization layer normalizes along the $(N, H, W)$ axes, where $N$ is the batch size.
+Hence, there is a obvious dependence on the batch size and it is clear why the statistical error increases when the batch size decreases.
+Instance normalization computes the mean and variance separately for each sample in the batch and each channel,
+layer normalization computes the mean and variance for each sample but includes all channels and spatial resolution.
+Thus, instance and layer normalization have no dependence on the batch size in their computation.
+Group norm splits the channels into groups with a group size that is specified by an additional hyperparamter.
+Group normalization then computes the mean and variance for each group and each sample, making it independent of the batch size as well.\\
+
+In the paper they evaluated the performance of the different normalization layers firstly on the ImageNet classification dataset.
+A ResNet-50 was trained on the batch sizes $\{32, 16, 8, 4, 2\}$, the results clearly show that for the larger batch sizes ($32, 16$) the group norm layer is only slightly outperformed by the batch norm whereas for the smaller
+batch sizes ($4,2$) the group norm is able to significantly outperform the batch normalization layer.
+It is observed that the group normalization is robust as the performance does not deteriorate for larger batch sizes.
+This behaviour is later reproduced in section~\ref{sec:implementation}.\\
+They further experimented with the group normalization layer by integrating them into the Mask R-CNNs and training them on COCO for the task of object detection.
+Again they were able to show group normalization outperforming the previously employed batch normalization.\\
+Lastly, they evaluated the behaviour on a video classification task where the normalization layers were extended to include tne temporal axis.
+Group normalization again showed a similar performance for the larger batch size of 8 and outperformed batch normalization for the smaller batch size of 4.
+
+\subsection{Context of the Paper}
+The context of the paper in the literature is one in which a new normalization technique is proposed that enables researches to experiment with the usage in different network architectures and potentially find architectures better suited to this specific form of normalization.
+In the context of the lecture Deep Vision group normalization relates to the concepts covered in chapter \RNum{4} Training Deep Network Architectures.
+After quickly motivating the need for normalization in deep networks two main techniques are discussed.
+Firstly, Local Response Normalization (LRN) where neighboring channels at a single position or local spatial neighborhoods are normalized together.
+Secondly, the previously discussed techniques of batch, layer, instance and group normalization.
+The paper primarily relates to the second technique, hence LRN is not discussed any further in the following.
+The internal covariance shift describes the phenomenon that the distribution may change in a deep network, to prevent this from happening normalization layers are applied at various stages of a network to renormalize the activations to zero mean and unit variance.
+The lecture quickly covers the aforementioned batch normalization algorithm and points out the potential problem when training with small batch sizes.
+Furthermore, the layer norm, instance norm and group norm algorithms are discussed and as in the original paper the relationship between the different normalization techniques is mentioned.
+Meaning that group normalization and layer normalization are identical if the number of channels per group is set to one.
+Similarly, group normalization and instance normalization are identical when the group number is set to the number of channels in the individual layer.\\
+
+Taking a step back, the presented normalization techniques relate to techniques or concepts to stabilize and improve the training of deep networks.
+Other techniques for this that were mentioned during the lecture are advanced optimizers such as Adam, weight initialization techniques to minimize the required learning by the netowrk
+but also regularization techniques such as dropout and data augmentation.
+Also mentioned in this context were techniques on a systems level such as fine-tuning and transfer-learning where entire parts of a network are utilized that were previously trained for a different task, for visual tasks this is commonly the ImageNet classification task.
+Other similar techniques include unsupervised pretraining, e.g. as an autoencoder to learn useful representations.
+
+\subsection{Future Work}
+Due to this paper introducing a novel concept for normalization which is independent of the batch size but appears to work better for visual tasks much of the future work is integrating it into established architectures to test its performance.
+Further, to apply this concept to current research to possibly find network architectures that natively incorporate group normalization layers.
+One of the aspects mentioned in the paper is the application of group normalization in generative models as they have a significant memory footprint.
